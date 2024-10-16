@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://kit.fontawesome.com/d8129a5809.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <main class="mainContainer">
+        <div class="container">
+            <img src="./list (1).png" alt="todo-icon" class="todo-icon">
+            <div class="header">
+                <h2 class="title">Todo list</h2>
+                <img src="./to-do-list (1).png" alt="todo-img " class="todo-img" >
+            </div>
+            <div class="input">
+                <div class="inputSection">
+                    <input class="taskInput" type="text" placeholder="Enter your task..." onkeyup="count()"
+                        maxlength="100">
+                    <button class="addBtn" type="button" onclick="addList()"><i
+                            class="fa-solid fa-plus"></i>Add</button>
+                </div>
+                <div class="textCountSection">
+                    <h5 class="errorMessage"></h5>
+                    <h5 class="textCountlength"><span class="textCount">0</span> / 100</h5>
+                </div>
+            </div>
+            <div class="task-list">
+            </div>
+        </div>
+    </main>
+
+    <script>
+
+        const task = document.querySelector('.taskInput');
+        const textCount = document.querySelector('.textCount');
+        const errorMessage = document.querySelector('.errorMessage');
+        const task_list = document.querySelector('.task-list');
+
+        function count() {
+            textCount.textContent = task.value.length;
+            if(task.value[0]===' '){
+                errorMessage.style.visibility = 'visible'
+                errorMessage.textContent = "Avoid starting with space."
+                task.value='';
+                textCount.textContent = task.value.length;
+            }else if (task.value.length === 100) {
+                errorMessage.style.visibility = 'visible'
+                errorMessage.textContent = "Character limit exceeded."
+            }else
+                 errorMessage.style.visibility = 'hidden'
+        }
+
+        function addList() {
+             if (task.value.length == 0) {
+                errorMessage.style.visibility = 'visible'
+                errorMessage.textContent = "Task cannot be blank."
+            } else {
+                const taskItem = document.createElement('div');
+                taskItem.className = 'taskItem';
+                task_list.append(taskItem);
+
+                const checkIcon = document.createElement('span');
+                checkIcon.className = 'checkIcon';
+                taskItem.append(checkIcon);
+
+                const circle = document.createElement('i');
+                circle.className = 'fa-regular fa-circle';
+                checkIcon.append(circle);
+
+                checkIcon.addEventListener('click',function(){
+                   if(circle.classList.contains("fa-circle")){
+                    circle.className = 'fa-solid fa-circle-check';
+                    circle.style.color="green";
+                    completed.style.display = 'inline';
+                   }else{
+                    circle.className = 'fa-regular fa-circle';
+                    circle.style.color="black";
+                    completed.style.display = 'none';
+                   }
+                });
+
+                const taskName = document.createElement('p');
+                taskName.className = 'taskName';
+                taskItem.append(taskName);
+
+                const completed = document.createElement('span');
+                completed.className = 'completed';
+                completed.textContent = "completed : ";
+                taskName.append(completed);  
+
+                taskName.append(document.createTextNode(task.value)); 
+
+                const deleteIcon = document.createElement('span');
+                deleteIcon.className = 'deleteIcon';
+                taskItem.append(deleteIcon);
+
+                const trash_can = document.createElement('i');
+                trash_can.className = 'fa-solid fa-trash-can';
+                deleteIcon.append(trash_can);
+
+                deleteIcon.addEventListener('click',function(){
+                task_list.removeChild(taskItem);
+                });
+
+                const hover_text = document.createElement('p');
+                hover_text.className = 'hover-text';
+                hover_text.textContent = task.value;
+                taskItem.append(hover_text);
+                
+                task.value = "";
+                textCount.textContent="0"
+                errorMessage.style.visibility = 'hidden';
+            }
+
+
+        }
+    </script>
+</body>
+
+</html>
